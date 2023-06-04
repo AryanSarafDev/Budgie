@@ -1,4 +1,7 @@
 import 'package:budgie/controllers/checkC.dart';
+import 'package:budgie/controllers/datadisplaycontrollers.dart';
+import 'package:budgie/controllers/textboxController.dart';
+import 'package:budgie/ui/homescreenwidgets.dart';
 import 'package:budgie/views/login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,47 +9,57 @@ import 'package:get/get.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final c = Get.put(ChekController());
+  final displayBalance = Get.put(DisplayBalanceController());
+  final TextEditingController addbalance = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final value = c.check.value;
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text("Budgie"))),
-      floatingActionButton: FloatingActionButton(backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+      appBar: AppBar(
+          title: Center(
+              child: Text(
+        "Budgie",
+      ))),
+      floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: Icon(Icons.add,color: Theme.of(context).colorScheme.onTertiaryContainer,),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.onTertiaryContainer,
+        ),
         focusElevation: 20,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Container(
-        height: 200,
-        width: 200,
-        child: Card(
-          color: Theme.of(context).colorScheme.tertiaryContainer,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Obx(() => Text(
-                    "${c.check}",
-                    style: TextStyle(
-                        color:
-                            Theme.of(context).colorScheme.onTertiaryContainer,
-                        fontSize: 50),
-                  )),
-              FilledButton(
-                  onPressed: () {
-                    c.updatevalue();
-                  },
-                  child: Text("Press")),
-              ElevatedButton(
-                  onPressed: () {
-                    Get.to(const LoginScreen());
-                  },
-                  child: Text("Press"))
+              TopCard(
+                  value1: 2000,
+                  value2: 2000,
+                  title1: "Budget",
+                  title2: "Remaining"),
+              TopCard(
+                  value1: 2000, value2: 2000, title2: "Debt", title1: "Savings")
             ],
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              "Total Balance",
+              style: TextStyle(fontSize: 30),
+              textAlign: TextAlign.start,
+            ),
+          ),
+          Obx(() => Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: TotalBalance(balance: displayBalance.Balance.value),
+              )),
+          Addbalance(addbalancecontroller: addbalance)
+        ],
       ),
     );
   }
