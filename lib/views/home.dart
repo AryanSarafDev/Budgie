@@ -1,3 +1,4 @@
+import 'package:budgie/controllers/animationcontroller.dart';
 import 'package:budgie/controllers/checkC.dart';
 import 'package:budgie/controllers/datadisplaycontrollers.dart';
 import 'package:budgie/controllers/textboxController.dart';
@@ -10,6 +11,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final c = Get.put(ChekController());
   final displayBalance = Get.put(DisplayBalanceController());
+  final HeightAnimation = Get.put(PageAnimationController());
   final TextEditingController addbalance = TextEditingController();
 
   @override
@@ -58,7 +60,14 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: TotalBalance(balance: displayBalance.Balance.value),
               )),
-          Addbalance(addbalancecontroller: addbalance)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Addbalance(
+                  addbalancecontroller: addbalance,
+
+                ),
+          ),
+          TransactionList()
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:budgie/controllers/animationcontroller.dart';
 import 'package:budgie/controllers/checkC.dart';
 import 'package:budgie/controllers/textboxController.dart';
 import 'package:budgie/views/login.dart';
@@ -88,6 +89,7 @@ class TopCard extends StatelessWidget {
 class TotalBalance extends StatelessWidget {
   TotalBalance({Key? key, required this.balance}) : super(key: key);
   var balance = 0.0;
+  final HeightAnimation = Get.put(PageAnimationController());
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +118,9 @@ class TotalBalance extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                   GreenButton(
-                    onPress: () {},
+                    onPress: () {
+                      HeightAnimation.click();
+                    },
                     icon: Icon(Icons.arrow_forward_outlined),
                     buttonHeight: 70,
                   )
@@ -131,31 +135,40 @@ class TotalBalance extends StatelessWidget {
 class Addbalance extends StatelessWidget {
   Addbalance({Key? key, required this.addbalancecontroller}) : super(key: key);
   TextEditingController addbalancecontroller;
+  final HeightAnimation = Get.put(PageAnimationController());
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        GreenButton(onPress: () {}, icon: Icon(Icons.remove)),
-        SizedBox(
-            width: MediaQuery.of(context).size.width * 0.5,
-            child: TextFieldInput(
-              textEditingController: addbalancecontroller,
-              hintText: "Enter amount",
-              textInputType: TextInputType.number,
-              boxwidth: 20,
-            )),
-        GreenButton(onPress: () {}, icon: Icon(Icons.add))
-      ],
-    ));
+    return Obx(() {
+      return AnimatedContainer(
+          height: HeightAnimation.Height.value,
+          duration: Duration(milliseconds: 400),
+          child: SingleChildScrollView(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GreenButton(onPress: () {}, icon: Icon(Icons.remove)),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: TextFieldInput(
+                      fontsize: 25,
+                      textEditingController: addbalancecontroller,
+                      hintText: "Enter amount",
+                      textInputType: TextInputType.number,
+                      boxwidth: 20,
+                    )),
+                GreenButton(onPress: () {}, icon: Icon(Icons.add))
+              ],
+            ),
+          ));
+    });
   }
 }
 
 class GreenButton extends StatelessWidget {
+  final HeightAnimation = Get.put(PageAnimationController());
   final double? buttonHeight;
-  final Function onPress;
+  final onPress;
   final Icon icon;
   GreenButton(
       {Key? key,
@@ -172,6 +185,22 @@ class GreenButton extends StatelessWidget {
             color: Theme.of(context).colorScheme.tertiaryContainer,
             borderRadius: BorderRadius.circular(40),
             border: Border.all(color: Colors.grey.withOpacity(0.2), width: 3)),
-        child: IconButton(onPressed: () {}, icon: icon));
+        child: IconButton(onPressed: onPress, icon: icon));
+  }
+}
+
+class TransactionList extends StatelessWidget {
+  const TransactionList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Card(),
+      ),
+    ));
   }
 }
